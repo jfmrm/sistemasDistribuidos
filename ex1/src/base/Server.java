@@ -35,24 +35,9 @@ public class Server {
 			BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
 		
 			String input;
-			try {
-				do {
-						input = in.readLine();
-					System.out.println("recebido: " + input);
-					out.println("O servidor devolve a mesma mensagem: " +
-				
-					input.toUpperCase());
-				
-				} while (input != null);
-				
-				out.close();
-				in.close();
-				stdIn.close();
-				echoSocket.close();
-				server.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			Listen l = new Listen(in);
+			new Thread(l).start();
+			Write w = new Write(out);
+			new Thread(w).start();
 		}
 }

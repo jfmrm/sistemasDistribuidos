@@ -16,8 +16,7 @@ public class Client {
 		try {
 			echoSocket = new Socket("localhost", port);
 			out = new PrintWriter(echoSocket.getOutputStream(), true);
-			in = new BufferedReader(new InputStreamReader(
-			echoSocket.getInputStream()));
+			in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -27,18 +26,22 @@ public class Client {
 		}
 		
 		try {
-			BufferedReader stdIn = new BufferedReader(new InputStreamReader(
-		
-			System.in));
+			BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
 		
 			String userInput;
 		
 			System.out.println(in.readLine());
-			while ((userInput = stdIn.readLine()) != null) {
-		
-				out.println(userInput);
-				System.out.println("echo: " + in.readLine());
-			}
+			
+			Listen l = new Listen(in);
+			new Thread(l).start();
+			Write w = new Write(out);
+			new Thread(w).start();
+			
+//			while ((userInput = stdIn.readLine()) != null) {
+//		
+//				out.println(userInput);
+//				System.out.println("Server: " + in.readLine());
+//			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
