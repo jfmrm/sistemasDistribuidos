@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class CalculatorClient {
 	public static void main(String[] args) {
@@ -13,7 +14,10 @@ public class CalculatorClient {
 			ObjectOutputStream outToServer = new ObjectOutputStream(socket.getOutputStream());
 			ObjectInputStream inFromServer = new ObjectInputStream(socket.getInputStream());
 			
-			outToServer.writeObject("mul(1,3)");
+			System.out.println(">>>> " + (String) inFromServer.readObject());
+
+			Scanner in = new Scanner(System.in);
+			outToServer.writeObject(in.nextLine());
 			outToServer.flush();
 			
 			String respMsg = (String) inFromServer.readObject();

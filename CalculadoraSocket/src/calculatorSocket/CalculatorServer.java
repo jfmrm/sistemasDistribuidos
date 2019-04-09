@@ -7,7 +7,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class CalculatorServer {
-
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
@@ -17,6 +16,9 @@ public class CalculatorServer {
 			
 			ObjectOutputStream outToClient = new ObjectOutputStream(socket.getOutputStream());
 			ObjectInputStream inFromClient = new ObjectInputStream(socket.getInputStream());
+			
+			outToClient.writeObject("Digite a operação que deseja realizar no formato <op>(p1, p2)");
+			outToClient.flush();
 			
 			String rcvMsg = (String) inFromClient.readObject();
 			
