@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Client {
+	static String nickName = null;
 	public static void main(String[] args) {
 		Socket echoSocket = null;
 		PrintWriter out = null;
@@ -27,14 +28,14 @@ public class Client {
 		
 		try {
 			BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-		
-			String userInput;
-		
+			System.out.println("Digite um nickName");
+			nickName = stdIn.readLine();
+			
 			System.out.println(in.readLine());
 			
 			Listen l = new Listen(in);
 			new Thread(l).start();
-			Write w = new Write(out);
+			Write w = new Write(out, nickName);
 			new Thread(w).start();
 			
 //			while ((userInput = stdIn.readLine()) != null) {
