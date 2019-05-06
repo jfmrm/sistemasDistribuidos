@@ -2,12 +2,22 @@ import amqp from 'amqplib';
 
 export function startSending() {
     return amqp.connect('amqp://localhost')
-        .then((conn) => {
-            return conn.createChannel()
+        .then((connection) => {
+            return connection.createChannel()
         }).then((channel) => {
-                let q = 'hello';
-                channel.assertQueue(q, { durable: false });
-                channel.sendToQueue(q, Buffer.from("Hello World!"));
-                console.log("[x] Sent Hello World!");
+            const queue = 'task_queue';
+            for(let i = 0; i < 10; i ++) {
+                let msg = `${i} function .....`;
+    
+                channel.assertQueue(queue, {
+                    durable: true
+                });
+                channel.sendToQueue(queue, Buffer.from(msg), {
+                    persistent: true
+                });
+                console.log(" [x] Sent '%s'", msg);
+            }
         });
 }
+
+startSending()
