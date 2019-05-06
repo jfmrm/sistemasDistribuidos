@@ -9,12 +9,10 @@ export function startSending() {
             for(let i = 0; i < 10; i ++) {
                 let msg = `${i} function .....`;
     
-                channel.assertQueue(queue, {
-                    durable: true
+                channel.assertExchange('logs1', 'fanout', {
+                    durable: false
                 });
-                channel.sendToQueue(queue, Buffer.from(msg), {
-                    persistent: true
-                });
+                channel.publish('logs1', '', Buffer.from(msg));
                 console.log(" [x] Sent '%s'", msg);
             }
         });

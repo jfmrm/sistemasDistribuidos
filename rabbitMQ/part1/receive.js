@@ -7,20 +7,22 @@ export function startReceiving(name) {
         }).then((channel) => {
             const queue = 'task_queue';
             
-            channel.assertQueue(queue, {
-                durable: true
+            channel.assertExchange('logs1', 'fanout', {
+                durable: false
             });
-            channel.prefetch(1);
-            console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);
-            channel.consume(queue, (msg) => {
-                let secs = msg.content.toString().split('.').length - 1;
-        
-                console.log(" [x] Received %s", msg.content.toString());
-                setTimeout(() => {
-                    console.log(" [x] Done");
-                    channel.ack(msg);
-                }, secs * 1000);
-            }, {noAck: false});
+
+            channel.assertQueue('', { exclusive: true })
+                .then((q) => {
+                    console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", q.queue);
+                    channel.bindQueue(q.queue, 'logs1', '');
+
+                    channel.prefetch(1);
+                    console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);
+
+                    channel.consume(q.queue, (msg) => {
+                        console.log(" [x] Received %s", msg.content.toString());
+                    }, {noAck: true});
+                })
         });
 }
 
