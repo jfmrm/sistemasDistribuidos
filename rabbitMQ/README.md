@@ -1,5 +1,6 @@
 # Questão 1
 A diferença entre o primeiro e o segundo é a adição a simulação de tempo feita para resolver cada tarefa da fila, e a divisão entre vários consumers, introduzindo o conceito de Roud Robin.
+
 No terceiro tutorial entra a abstração do Exchange, que possibilita a criação de grupos de canais, dando mais poder para o manuseio das tarefas entre canais.
 
 # Questão 2
